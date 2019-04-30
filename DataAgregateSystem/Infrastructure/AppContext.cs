@@ -7,6 +7,7 @@ namespace Infrastructure
     public class AppContext : DbContext
     {
         public DbSet<FacebookPage> FacebookPages { get; set; }
+        public DbSet<FacebookPageData> FacebookPageData { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
