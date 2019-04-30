@@ -6,7 +6,12 @@ namespace Infrastructure.Services
     {
         public void GetDataFacebookPage()
         {
-            throw new System.NotImplementedException();
+            
+        }
+
+        public void GetDataFacebookPage(long idPage)
+        {
+            
         }
     }
 }
