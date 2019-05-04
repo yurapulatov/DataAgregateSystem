@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
+using AppContext = Infrastructure.AppContext;
 
 namespace Web
 {
@@ -34,7 +36,8 @@ namespace Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            
+            services.AddDbContext<AppContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("Connection")));
             services.AddScoped<IParserService, ParserService>();
             services.AddSingleton<IHostedService, ParserManagerService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

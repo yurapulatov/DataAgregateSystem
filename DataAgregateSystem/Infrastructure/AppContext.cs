@@ -9,9 +9,15 @@ namespace Infrastructure
         public DbSet<FacebookPage> FacebookPages { get; set; }
         public DbSet<FacebookPageData> FacebookPageData { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public AppContext(DbContextOptions<AppContext> options)
+            : base(options)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=parserdb;Username=postgres;Password=12345");
+            Database.EnsureCreated();
+        }
+        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
         }
     }
 }
