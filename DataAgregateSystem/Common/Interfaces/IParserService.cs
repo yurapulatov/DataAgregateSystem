@@ -1,9 +1,10 @@
+using System.Threading.Tasks;
+using Common.Entities;
+
 namespace Common.Interfaces
 {
     public interface IParserService
     {
-        void GetDataFacebookPage();
-
-        void GetDataFacebookPage(long id);
+        Task GetTrafficData();
     }
 }

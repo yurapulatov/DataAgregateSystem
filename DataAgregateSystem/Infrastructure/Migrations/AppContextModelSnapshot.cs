@@ -19,47 +19,18 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Common.Entities.FacebookPage", b =>
+            modelBuilder.Entity("Common.Entities.TrafficData", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("MaxAddMembersPerWeek");
+                    b.Property<DateTime>("DateCreate");
 
-                    b.Property<string>("NamePage");
-
-                    b.Property<string>("UrlPage");
+                    b.Property<int>("Value");
 
                     b.HasKey("Id");
 
-                    b.ToTable("FacebookPages");
-                });
-
-            modelBuilder.Entity("Common.Entities.FacebookPageData", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("CountMembers");
-
-                    b.Property<DateTime?>("DateUpdate");
-
-                    b.Property<long>("IdPage");
-
-                    b.Property<long?>("PageId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PageId");
-
-                    b.ToTable("FacebookPageData");
-                });
-
-            modelBuilder.Entity("Common.Entities.FacebookPageData", b =>
-                {
-                    b.HasOne("Common.Entities.FacebookPage", "Page")
-                        .WithMany()
-                        .HasForeignKey("PageId");
+                    b.ToTable("TrafficData");
                 });
 #pragma warning restore 612, 618
         }

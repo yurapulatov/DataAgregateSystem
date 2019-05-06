@@ -33,7 +33,7 @@ namespace Infrastructure.Services
                     try
                     {
                         _logger.LogDebug($"Start parser. DateTime started: {DateTime.UtcNow}");
-                        parseService.GetDataFacebookPage();
+                        await parseService.GetTrafficData();
                         _logger.LogDebug($"Finish parser. DateTime finished: {DateTime.UtcNow}");
                     }
                     catch (Exception e)

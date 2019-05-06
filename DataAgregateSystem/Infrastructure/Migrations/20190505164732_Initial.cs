@@ -1,32 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
-    public partial class InitialMigrate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "FacebookPages",
+                name: "TrafficData",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    UrlPage = table.Column<string>(nullable: true),
-                    NamePage = table.Column<string>(nullable: true),
-                    MaxAddMembersPerWeek = table.Column<decimal>(nullable: false)
+                    Value = table.Column<int>(nullable: false),
+                    DateCreate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FacebookPages", x => x.Id);
+                    table.PrimaryKey("PK_TrafficData", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FacebookPages");
+                name: "TrafficData");
         }
     }
 }

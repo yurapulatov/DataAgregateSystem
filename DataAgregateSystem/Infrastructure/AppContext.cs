@@ -6,8 +6,7 @@ namespace Infrastructure
 {
     public class AppContext : DbContext
     {
-        public DbSet<FacebookPage> FacebookPages { get; set; }
-        public DbSet<FacebookPageData> FacebookPageData { get; set; }
+        public DbSet<TrafficData> TrafficData { get; set; }
 
         public AppContext(DbContextOptions<AppContext> options)
             : base(options)

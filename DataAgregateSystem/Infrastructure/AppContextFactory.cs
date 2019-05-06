@@ -3,39 +3,41 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using AppContext = Infrastructure.AppContext;
 
-public class AppContextFactory : IDesignTimeDbContextFactory<AppContext>
+namespace Infrastructure
 {
-    private static string _connectionString;
-
-    public AppContext CreateDbContext()
+    public class AppContextFactory : IDesignTimeDbContextFactory<AppContext>
     {
-        return CreateDbContext(null);
-    }
+        private static string _connectionString;
 
-    public AppContext CreateDbContext(string[] args)
-    {
-        if (string.IsNullOrEmpty(_connectionString)) LoadConnectionString();
+        public AppContext CreateDbContext()
+        {
+            return CreateDbContext(null);
+        }
 
-        var builder = new DbContextOptionsBuilder<AppContext>();
-        builder.UseNpgsql(_connectionString);
+        public AppContext CreateDbContext(string[] args)
+        {
+            if (string.IsNullOrEmpty(_connectionString)) LoadConnectionString();
 
-        return new AppContext(builder.Options);
-    }
+            var builder = new DbContextOptionsBuilder<AppContext>();
+            builder.UseNpgsql(_connectionString);
 
-    private static void LoadConnectionString()
-    {
-        var builder = new ConfigurationBuilder();
-        builder
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false);
+            return new AppContext(builder.Options);
+        }
 
-        var configuration = builder.Build();
+        private static void LoadConnectionString()
+        {
+            var builder = new ConfigurationBuilder();
+            builder
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false);
 
-        _connectionString = configuration.GetConnectionString("Connection");
+            var configuration = builder.Build();
 
-        if (string.IsNullOrEmpty(_connectionString))
-            throw new Exception("Not able to load connection string from appsettings.json");
+            _connectionString = configuration.GetConnectionString("Connection");
+
+            if (string.IsNullOrEmpty(_connectionString))
+                throw new Exception("Not able to load connection string from appsettings.json");
+        }
     }
 }
