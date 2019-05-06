@@ -40,6 +40,7 @@ namespace Web
                 options.UseNpgsql(Configuration.GetConnectionString("Connection")));
             services.AddScoped<IParserService, ParserService>();
             services.AddSingleton<IHostedService, ParserManagerService>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -66,6 +67,11 @@ namespace Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<AppContext>();
+                context.Database.Migrate();
+            }
         }
     }
 }

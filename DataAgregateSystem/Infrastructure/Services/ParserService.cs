@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -25,7 +26,7 @@ namespace Infrastructure.Services
 
         public async Task GetTrafficData()
         {
-            var urlPage = _configuration.GetValue<string>("UrlPageForParse");
+            var urlPage = _configuration.GetSection("UrlPageForParse").Value;
             using (var webClient = new WebClient())
             {
                 _logger.LogInformation($"Получение HTML кода веб-страницы URL:{urlPage}");
@@ -36,13 +37,15 @@ namespace Infrastructure.Services
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
-                    throw;
+                    _logger.LogError(e, "Ошибка в получении страницы сайта");
+                    _context.TrafficData.Add(GetLastTrafficData());
+                    return;
                 }
 
                 if (string.IsNullOrWhiteSpace(htmlBody))
                 {
                     _logger.LogError($"Значение для {nameof(htmlBody)} для веб-страницы URL: {urlPage} является пустым!");
+                    _context.TrafficData.Add(GetLastTrafficData());
                 }
                 else
                 {
@@ -50,6 +53,7 @@ namespace Infrastructure.Services
                     if (data == null)
                     {
                         _logger.LogError($"Значение является нулевым для {nameof(data)}");
+                        _context.TrafficData.Add(GetLastTrafficData());
                     }
                     else
                     {
@@ -66,12 +70,12 @@ namespace Infrastructure.Services
             try
             {
                 var match = Regex.Match(htmlBody, 
-                    "");
+                    @"<level>(?<value>\d+)</level>");
                 if (match.Success)
                 {
                     trafficData = new TrafficData
                     {
-                        Value = Convert.ToUInt16(match.Groups["value"]),
+                        Value = Convert.ToUInt16(match.Groups["value"].Value),
                         DateCreate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
                             TimeZoneInfo.FindSystemTimeZoneById("North Asia Standard Time")),
                     };
@@ -83,6 +87,13 @@ namespace Infrastructure.Services
             }
             
             return trafficData;
+        }
+
+        private TrafficData GetLastTrafficData()
+        {
+            var data = _context.TrafficData.OrderByDescending(x => x.DateCreate).First();
+            data.Id = 0;
+            return data;
         }
     }
 }
