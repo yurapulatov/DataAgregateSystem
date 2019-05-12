@@ -62,6 +62,8 @@ namespace Infrastructure.Services
                 }
 
             }
+
+            _context.SaveChanges();
         }
 
         private TrafficData ParseHtmlCode(string htmlBody)

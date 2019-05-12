@@ -40,7 +40,7 @@ namespace Infrastructure.Services
                     {
                         _logger.LogError($"Error parser. Message: {e}. InnerMassage: {e.InnerException}");
                     }
-                    await Task.Delay(10000, stoppingToken);
+                    await Task.Delay(1000 * 60, stoppingToken);
                 }
             }
 
