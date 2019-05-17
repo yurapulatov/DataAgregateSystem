@@ -19,10 +19,12 @@ export interface GraphPageState {
 
 interface LoadDataTrafficAction { type: 'GraphPage__LoadDataTraffic', newData: TrafficData[] }
 interface LoadDataAverageTrafficAction { type: 'GraphPage__LoadDataAverageTraffic', newDataAverage: TrafficData[] }
+interface SetDateAction { type: 'GraphPage__SetDate', newDate: Date }
+interface BugAction { type: 'GraphPage__BUG'}
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = LoadDataTrafficAction | LoadDataAverageTrafficAction;
+type KnownAction = LoadDataTrafficAction | LoadDataAverageTrafficAction | SetDateAction | BugAction;
 
 // ----------------
 // ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
@@ -36,6 +38,7 @@ export const actionCreators = {
                 dispatch({ type: 'GraphPage__LoadDataTraffic', newData: data });
             });
         addTask(fetchTask);
+        dispatch({ type: 'GraphPage__SetDate', newDate: date});
     },
     loadTrafficAverageData:  (): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let fetchTask = fetch(`api/SampleData/LoadTrafficAverage`)
@@ -62,6 +65,11 @@ export const reducer: Reducer<GraphPageState> = (state: GraphPageState, action: 
             break;
         case 'GraphPage__LoadDataAverageTraffic':
             stateNew.dataAverage = action.newDataAverage;
+            break;
+        case 'GraphPage__SetDate':
+            stateNew.chooseDate = action.newDate;
+            break;
+        case 'GraphPage__BUG':
             break;
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
