@@ -2,6 +2,7 @@ import {Reducer} from 'redux';
 import {TrafficData} from "../models/TrafficData";
 import {addTask, fetch} from "domain-task";
 import {AppThunkAction} from "./index";
+import * as moment from "moment";
 
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
@@ -9,7 +10,6 @@ import {AppThunkAction} from "./index";
 export interface GraphPageState {
     data: TrafficData[];
     chooseDate: Date | null;
-    dataAverage: TrafficData[];
 }
 
 // -----------------
@@ -18,13 +18,12 @@ export interface GraphPageState {
 // Use @typeName and isActionType for type detection that works even after serialization/deserialization.
 
 interface LoadDataTrafficAction { type: 'GraphPage__LoadDataTraffic', newData: TrafficData[] }
-interface LoadDataAverageTrafficAction { type: 'GraphPage__LoadDataAverageTraffic', newDataAverage: TrafficData[] }
 interface SetDateAction { type: 'GraphPage__SetDate', newDate: Date }
 interface BugAction { type: 'GraphPage__BUG'}
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = LoadDataTrafficAction | LoadDataAverageTrafficAction | SetDateAction | BugAction;
+type KnownAction = LoadDataTrafficAction | SetDateAction | BugAction;
 
 // ----------------
 // ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
@@ -32,21 +31,13 @@ type KnownAction = LoadDataTrafficAction | LoadDataAverageTrafficAction | SetDat
 
 export const actionCreators = {
     loadTrafficData:  (date: Date): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        let fetchTask = fetch(`api/SampleData/LoadTraffic?date=${ date }`)
+        let fetchTask = fetch(`api/SampleData/LoadTraffic?date=${ moment(date).format("DD/MM/YYYY") }`)
             .then(response => response.json() as Promise<TrafficData[]>)
             .then(data => {
                 dispatch({ type: 'GraphPage__LoadDataTraffic', newData: data });
             });
         addTask(fetchTask);
         dispatch({ type: 'GraphPage__SetDate', newDate: date});
-    },
-    loadTrafficAverageData:  (): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        let fetchTask = fetch(`api/SampleData/LoadTrafficAverage`)
-            .then(response => response.json() as Promise<TrafficData[]>)
-            .then(data => {
-                dispatch({ type: 'GraphPage__LoadDataAverageTraffic', newDataAverage: data });
-            });
-        addTask(fetchTask);
     }
 };
 
@@ -56,15 +47,11 @@ export const actionCreators = {
 export const reducer: Reducer<GraphPageState> = (state: GraphPageState, action: KnownAction) => {
     const stateNew: GraphPageState = {
         chooseDate: state ? state.chooseDate : null,
-        dataAverage : state ? state.dataAverage : [],
         data : state ? state.data : []
     };
     switch (action.type) {
         case 'GraphPage__LoadDataTraffic':
             stateNew.data = action.newData;
-            break;
-        case 'GraphPage__LoadDataAverageTraffic':
-            stateNew.dataAverage = action.newDataAverage;
             break;
         case 'GraphPage__SetDate':
             stateNew.chooseDate = action.newDate;

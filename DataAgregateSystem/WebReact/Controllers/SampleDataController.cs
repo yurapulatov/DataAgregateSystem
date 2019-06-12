@@ -2,40 +2,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Entities;
+using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using AppContext = Infrastructure.AppContext;
 
 namespace WebReact.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private readonly AppContext _context;
 
-        [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts(int startDateIndex)
+        public SampleDataController(AppContext context)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                DateFormatted = DateTime.Now.AddDays(index + startDateIndex).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
+            _context = context;
         }
 
-        public class WeatherForecast
+        [HttpGet("[action]")]
+        public IEnumerable<TrafficDataDTO> LoadTraffic(DateTime? date)
         {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF
-            {
-                get { return 32 + (int) (TemperatureC / 0.5556); }
-            }
+            if (date == null)
+                throw new ArgumentNullException(nameof(date));
+            var dateB = date.Value.Date;
+            var traffic = _context.TrafficData.Where(x => x.DateCreate.Date == dateB.Date)
+                .Select(x => new TrafficDataDTO
+                {
+                    Data = x.Value,
+                    Name = x.Time
+                });
+            var result = traffic.ToList();
+            return result;
         }
     }
 }

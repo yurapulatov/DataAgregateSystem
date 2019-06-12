@@ -7,7 +7,7 @@ export class Layout extends React.Component<{}, {}> {
                 <div style={{width: 250}}>
                     <NavMenu />
                 </div>
-                <div style={{flex: 1}}>
+                <div style={{flex: 1, margin: 20}}>
                     { this.props.children }
                 </div>
         </div>;

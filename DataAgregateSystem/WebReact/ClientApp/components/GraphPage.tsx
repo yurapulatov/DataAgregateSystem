@@ -6,6 +6,7 @@ import * as GraphPageStore from '../store/GraphPageStore';
 import * as WeatherForecasts from '../store/WeatherForecasts';
 import BaseComponent from "../BaseComponent";
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
+import DatePicker from "react-date-picker"
 
 type GraphPageProps =
     GraphPageStore.GraphPageState
@@ -15,29 +16,33 @@ type GraphPageProps =
 
 class GraphPage extends BaseComponent<GraphPageProps> {
     public componentWillMount(): void {
-        this.props.loadTrafficAverageData();
         this.props.loadTrafficData(new Date());
     }
 
     public render() {
-        return <div>
-            <LineChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                    top: 5, right: 30, left: 20, bottom: 5,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-            </LineChart>
-        </div>;
+        return (<div>
+            <div>
+                <LineChart
+                    width={1000}
+                    height={500}
+                    data={this.props.data}
+                    margin={{
+                        top: 5, right: 30, left: 20, bottom: 5,
+                    }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="AverageData" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="Data" stroke="#82ca9d" />
+                </LineChart>
+            </div>
+            <div>
+                <DatePicker value = {this.props.chooseDate} onChange = {this.props.loadTrafficData}/>
+            </div>
+        </div>)
     }
     
 }

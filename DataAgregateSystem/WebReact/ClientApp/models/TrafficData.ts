@@ -1,4 +1,5 @@
 export class TrafficData {
-    DateCreate: Date;
-    Value: number;
+    Name: Date;
+    Data: number;
+    AverageData: number;
 }
