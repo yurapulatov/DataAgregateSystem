@@ -13,7 +13,7 @@ export class NavMenu extends React.Component<{}, {}> {
                     <NavLink to={'/graph'}>График изменения пробок</NavLink>
                 </li>
                 <li>
-                    <NavLink to={'/fetchdata'}>Карта красноярска</NavLink>
+                    <NavLink to={'/map'}>Карта Красноярска</NavLink>
                 </li>
             </ul>
         </div>;

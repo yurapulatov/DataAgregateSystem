@@ -3,7 +3,6 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ApplicationState }  from '../store';
 import * as GraphPageStore from '../store/GraphPageStore';
-import * as WeatherForecasts from '../store/WeatherForecasts';
 import BaseComponent from "../BaseComponent";
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 import DatePicker from "react-date-picker"
@@ -15,7 +14,7 @@ type GraphPageProps =
     & {};
 
 class GraphPage extends BaseComponent<GraphPageProps> {
-    public componentWillMount(): void {
+    public componentWillMount() {
         this.props.loadTrafficData(new Date());
     }
 
@@ -35,8 +34,7 @@ class GraphPage extends BaseComponent<GraphPageProps> {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="AverageData" stroke="#8884d8" activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey="Data" stroke="#82ca9d" />
+                    <Line type="monotone" dataKey="data" stroke="#82ca9d" />
                 </LineChart>
             </div>
             <div>
@@ -49,6 +47,6 @@ class GraphPage extends BaseComponent<GraphPageProps> {
 
 // Wire up the React component to the Redux store
 export default connect(
-    (state: ApplicationState) => state.graphPageState, // Selects which state properties are merged into the component's props
+    (state: ApplicationState) => state.graphPage, // Selects which state properties are merged into the component's props
     GraphPageStore.actionCreators                 // Selects which action creators are merged into the component's props
 )(GraphPage) as typeof GraphPage;

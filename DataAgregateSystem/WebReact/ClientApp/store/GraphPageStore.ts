@@ -31,12 +31,13 @@ type KnownAction = LoadDataTrafficAction | SetDateAction | BugAction;
 
 export const actionCreators = {
     loadTrafficData:  (date: Date): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        let fetchTask = fetch(`api/SampleData/LoadTraffic?date=${ moment(date).format("DD/MM/YYYY") }`)
+        let fetchTask = fetch(`api/SampleData/LoadTraffic?date=${ moment(date).format("MM/DD/YYYY") }`)
             .then(response => response.json() as Promise<TrafficData[]>)
             .then(data => {
                 dispatch({ type: 'GraphPage__LoadDataTraffic', newData: data });
             });
         addTask(fetchTask);
+        
         dispatch({ type: 'GraphPage__SetDate', newDate: date});
     }
 };

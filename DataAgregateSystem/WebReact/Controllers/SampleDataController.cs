@@ -24,12 +24,12 @@ namespace WebReact.Controllers
         {
             if (date == null)
                 throw new ArgumentNullException(nameof(date));
-            var dateB = date.Value.Date;
-            var traffic = _context.TrafficData.Where(x => x.DateCreate.Date == dateB.Date)
+            var dateB = date.Value;
+            var traffic = _context.TrafficData.Where(x => dateB.Date.Equals(x.DateCreate.Date))
                 .Select(x => new TrafficDataDTO
                 {
                     Data = x.Value,
-                    Name = x.Time
+                    Name = x.Time.ToShortTimeString()
                 });
             var result = traffic.ToList();
             return result;
