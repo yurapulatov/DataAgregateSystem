@@ -7,7 +7,7 @@ import { YMaps, Map, Placemark } from "react-yandex-maps";
 
 
 const mapData = {
-    center: [92.852572, 56.010563],
+    center: [56.010563, 92.852572],
     zoom: 12
 };
 
@@ -15,9 +15,13 @@ export default class YandexMapPage extends BaseComponent<RouteComponentProps<{}>
 
 
     public render() {
-        return <div>
+        return <div  style={{alignContent: "center", margin: 20}}>
+            <h1>Текущая дорожная ситуация</h1>
             <YMaps>
-                <Map defaultState={mapData}>
+                <Map
+                    width="100%"
+                    height={500}    
+                    state={mapData}>
                 </Map>
             </YMaps>
         </div>

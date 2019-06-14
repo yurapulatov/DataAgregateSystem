@@ -19,8 +19,9 @@ class GraphPage extends BaseComponent<GraphPageProps> {
     }
 
     public render() {
-        return (<div>
+        return (<div style={{alignContent: "center", margin: 20}}>
             <div>
+                <h1>График изменения баллов</h1>
                 <LineChart
                     width={1000}
                     height={500}
@@ -38,7 +39,7 @@ class GraphPage extends BaseComponent<GraphPageProps> {
                 </LineChart>
             </div>
             <div>
-                <DatePicker value = {this.props.chooseDate} onChange = {this.props.loadTrafficData}/>
+                Выберите дату: <DatePicker value = {this.props.chooseDate} onChange = {this.props.loadTrafficData}/>
             </div>
         </div>)
     }
