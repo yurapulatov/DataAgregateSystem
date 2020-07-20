@@ -45,7 +45,7 @@
     "json-loader": "0.5.4",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "moment": "^2.22.1",
     "node-noop": "1.0.0",
     "popper.js": "^1.14.3",
