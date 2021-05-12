@@ -28,7 +28,7 @@
     "axios": "^0.18.0",
     "bluebird": "^3.5.1",
     "bootstrap": "^4.1.0",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "chartjs-plugin-annotation": "^0.5.7",
     "css-loader": "0.28.4",
     "cytoscape-cola": "2.3.0",
